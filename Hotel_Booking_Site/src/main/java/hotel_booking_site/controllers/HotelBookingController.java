@@ -151,7 +151,7 @@ public class HotelBookingController {
 		
 		//Build list of customer's bookings if login is valid
 		List<BookingInfo> bookingInfoList = newBookingService.getListOfBookingsByCustomerId(customer.getId());
-		if (bookingInfoList.isEmpty()) {
+		if (bookingInfoList == null) {
 			model.addAttribute("bookings", false);
 		}
 		
@@ -178,7 +178,7 @@ public class HotelBookingController {
 		model.addAttribute(customer);
 		
 		List<BookingInfo> bookingInfoList = newBookingService.getListOfBookingsByCustomerId(customer.getId());
-		if (bookingInfoList.isEmpty()) {
+		if (bookingInfoList == null) {
 			model.addAttribute("bookings", false);
 		}
 		

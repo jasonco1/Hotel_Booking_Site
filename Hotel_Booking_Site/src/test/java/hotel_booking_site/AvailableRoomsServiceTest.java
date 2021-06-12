@@ -56,10 +56,12 @@ public class AvailableRoomsServiceTest {
 				
 		List<RoomInfo> roomInfoListExpectedResult = new ArrayList<>();
 		List<Room> rooms = new ArrayList<>();
+		List<Room> emptyList = new ArrayList<>();
 		rooms.add(room);
 	
 		//create stubs for values returned from database by repository classes
 		given(roomsRepository.findByCityName("Las Vegas")).willReturn(rooms);
+		given(roomsRepository.findByCityName("InvalidCityName")).willReturn(emptyList);
 		given(hotelsRepository.findById(1)).willReturn(hotel);
 		
 		//expected RoomInfo and RoomInfoList objects
@@ -67,7 +69,10 @@ public class AvailableRoomsServiceTest {
 		roomInfoListExpectedResult.add(roomInfo);
 		
 		List<RoomInfo> roomInfoListActualResult = availableRoomsService.getRoomInfo("Las Vegas");
+		List<RoomInfo> noRoomsFoundResult = availableRoomsService.getRoomInfo("InvalidCityName");
+
 		assertThat(roomInfoListExpectedResult).isEqualTo(roomInfoListActualResult);
-		
+		assertEquals(null, noRoomsFoundResult);
 	}
+	
 }

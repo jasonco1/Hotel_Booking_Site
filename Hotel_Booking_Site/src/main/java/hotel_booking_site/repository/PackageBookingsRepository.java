@@ -13,5 +13,5 @@ public interface PackageBookingsRepository extends JpaRepository<PackageBooking,
 	@Modifying
 	@Transactional
 	@Query(value="DELETE FROM package_bookings WHERE id = ?1", nativeQuery=true)  
-	void deletePackageBookingById(int id); 
+	int deletePackageBookingById(int id); 
 }

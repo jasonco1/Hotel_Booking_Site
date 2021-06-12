@@ -39,7 +39,11 @@ public class CustomerDataService {
 	}
 	
 	public int findCustomerIdByUsername(String username) {
-		Customer customer = customersRepository.findCustomerIdByUsername(username);		
+		Customer customer = customersRepository.findCustomerIdByUsername(username);
+		
+		if (customer == null) {
+			return 0;
+		}
 		return customer.getId();
 	}
 	

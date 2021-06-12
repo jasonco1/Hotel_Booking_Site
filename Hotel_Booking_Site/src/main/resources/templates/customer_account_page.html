@@ -12,9 +12,9 @@
  <h3 th:inline="text"> Account Details </h3>
  <hr />
  
- <h5 th:inline="text"> Name: <span th:text=${customer.getFirst_name()}></span> </h5>
+ <h5 th:inline="text"> Name: <span th:text=${customer.getFirst_name()}></span> <span th:text=${customer.getLast_name()}></span> </h5>
  <h5 th:inline="text"> Email: <span th:text=${customer.getEmail()}></span> </h5>
- <h5 th:inline="text"> Account Balance: <span th:text=${customer.getCurrent_balance()}></span> </h5>
+ <h5 th:inline="text"> Your Account Balance: <span th:text=${customer.getCurrent_balance()}></span> </h5>
  <br /> 
   
  <h3 th:inline="text"> My Bookings </h3>    

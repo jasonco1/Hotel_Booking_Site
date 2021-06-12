@@ -121,7 +121,9 @@ public class HotelsRestControllerTest {
 	public void shouldDeletePackageBookingById() throws Exception {
 		
 		int packageBookingId = 123;
-		given(newBookingService.cancelPackageHotelBooking(packageBookingId)).willReturn(true);
+		
+		//Return number of rows deleted in the database
+		given(newBookingService.cancelPackageHotelBooking(packageBookingId)).willReturn(1);
 		
 		//Call API with id of PackageBooking to delete from database
 		//Only delete (not post) method is accepted

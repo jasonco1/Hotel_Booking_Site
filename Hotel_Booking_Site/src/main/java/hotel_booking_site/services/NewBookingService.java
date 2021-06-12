@@ -46,6 +46,10 @@ public class NewBookingService {
 		List<BookingInfo> bookingInfoList = new ArrayList<>();
 		List<Booking> bookings = bookingsRepository.findBookingsByCustomerId(customer_id);
 		
+		if (bookings.size() < 1) {
+			return null;
+		}
+		
 		for (Booking booking : bookings) {
 			
 			Room room = roomsRepository.findbyRoomId(booking.getRoom_id());
@@ -57,13 +61,12 @@ public class NewBookingService {
 		return bookingInfoList;
 	}
 	
-	public boolean cancelHotelBooking(int id) {
-		bookingsRepository.deleteByBookingId(id);
-		return true;
+	public int cancelHotelBooking(int id) {
+		return bookingsRepository.deleteByBookingId(id);
 	}
 	
-	public boolean cancelPackageHotelBooking(int id) {
-		packageBookingsRepository.deletePackageBookingById(id);
-		return true;
+	public int cancelPackageHotelBooking(int id) {
+		return packageBookingsRepository.deletePackageBookingById(id);
 	}
+	
 }
