@@ -10,9 +10,9 @@
 <body>
 
    <div class="container">
-      <h2 th:inline="text"> Available hotels in <span th:text=${city}></span> 
-      from <span th:text=${checkInDate}></span> to <span th:text=${checkOutDate}></span> 
-      for <span th:text=${numberOccupants}> </span> <span th:text="${numberOccupants == 1} ? 'Guest' : 'Guests' "> </span>
+      <h2 th:inline="text"> Available hotels in <span style="font-weight: bold" th:text=${city}></span> 
+      from <span style="font-weight: bold" th:text=${checkInDate}></span> to <span style="font-weight: bold" th:text=${checkOutDate}></span> 
+      for <span style="font-weight: bold" th:text=${numberOccupants}> </span> <span th:text="${numberOccupants == 1} ? 'Guest' : 'Guests' "> </span>
       </h2>
     <hr /> 
     

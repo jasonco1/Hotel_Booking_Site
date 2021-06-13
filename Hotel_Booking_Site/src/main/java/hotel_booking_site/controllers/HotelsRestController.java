@@ -22,6 +22,8 @@ import hotel_booking_site.domain.RoomInfo;
 import hotel_booking_site.services.AvailableRoomsService;
 import hotel_booking_site.services.CustomerDataService;
 import hotel_booking_site.services.NewBookingService;
+import hotel_booking_site.repository.CustomersRepository;
+
 /*
  * This HTTP REST Controller provides the following APIs:
  *  
@@ -76,6 +78,8 @@ public class HotelsRestController {
 	public ResponseEntity<PackageBooking> create(@RequestBody PackageBooking packageBooking){
 		
 		newBookingService.persistNewPackageBooking(packageBooking);
+		
+		System.out.print("\n PackageBooking ID: " + packageBooking.getId() + "\n");
 		return new ResponseEntity<PackageBooking>(packageBooking, HttpStatus.OK);
 	}
 		
@@ -103,6 +107,12 @@ public class HotelsRestController {
 	public ResponseEntity<Customer> create(@RequestBody Customer customer){
 		
 		customerDataService.persistNewCustomer(customer);
+		
+		//Return id of customer per Integrations team request
+		int id = customerDataService.findCustomerIdByUsername(customer.getEmail());
+		customer.setId(id);
+		System.out.print("\n Customer ID: " + customer.getId() + "\n");
+		
 		return new ResponseEntity<Customer>(customer, HttpStatus.OK);
 	}
 	

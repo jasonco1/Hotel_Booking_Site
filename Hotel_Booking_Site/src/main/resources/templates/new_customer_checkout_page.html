@@ -2,18 +2,52 @@
 <html xmlns:th="www.thymeleaf.org">
 
 <head th:replace="fragments :: html_head">
+
 <title>Hotel Results</title>
 </head>
-
 <header th:replace="fragments :: nav_bar"></header>
 
 <body>
+<script> 
+$(document).ready(function(){
+
+   function validateFormInput(){
+         userInputEmail = $('[name="email"]').val();
+         userInputPassword = $('[name=password]').val();
+         
+         if (!userInputEmail.match(/[A-Za-z0-9]+@[A-Za-z0-9]+\.[A-Za-z]{3}/)){
+            $("#invalidEmail").css("display", "inline");
+            return false;
+         }
+         else if (!userInputPassword.match(/[A-Za-z0-9]{6,20}/)){
+        	 $("#invalidEmail").css("display", "none");
+        	 $("#invalidPassword").css("display", "inline");
+        	 return false;
+         }
+         else {
+        	 $("#invalidEmail").css("display", "none");
+        	 $("#invalidPassword").css("display", "none");
+        	 return true;
+         }
+      }
+
+      $("#inputForm").on("change", function(){
+         validateFormInput();
+      });
+      
+      $("#submit").on("click", function(e){
+          if (!validateFormInput()){
+        	  e.preventDefault();
+          }
+       });
+});
+</script>
 
    <div class="container">
-    <h2 th:inline="text"> Finalize Reservation </h2>
-     Staying in <span th:text=${city}> </span> 
-     from <span th:text=${checkInDate}> </span>
-     to <span th:text=${checkOutDate}> </span>
+    <h2 style="text-shadow: 2px 2px 2px rgba(0,0,0,0.2);" th:inline="text"> Finalize Reservation </h2>
+     Staying in <span style="font-weight: bold" th:text=${city}> </span> 
+     from <span style="font-weight: bold" th:text=${checkInDate}> </span>
+     to <span style="font-weight: bold" th:text=${checkOutDate}> </span>
     </div>
     <hr />
    
@@ -21,20 +55,22 @@
    <div class="container" style=text-align:center>
     <h3> Create a New Account to Complete Checkout </h3> 
     
-      <form action="/hotels/submitNewCustomerBooking" method="POST">
+      <form id="inputForm" action="/hotels/submitNewCustomerBooking" method="POST">
       <input type="hidden" name="roomId" th:value=${roomId}>
       <input type="hidden" name="numberOccupants" value=4>
       
          <label for="email"> Email  </label><br>
-         <input type="text" id="email" name="email" placeholder="username@csumb.edu"><br> 
+         <input type="text" id="email" name="email" placeholder="username@csumb.edu"><br>  
          <label for="password"> Password  </label><br>
          <input type="text" id="password" name="password" placeholder="password"><br>  
          <label for="firstName"> First Name  </label><br>
          <input type="text" id="firstName" name="firstName" placeholder="John"><br>
          <label for="lastName"> Last Name  </label><br>
          <input type="text" id="lastName" name="lastName" placeholder="Smith"><br> <br>     
-         <button class="button button5" type="submit">Book Stay</button>
+         <button class="button button5" id="submit" type="submit">Book Stay</button>
       </form>
+      <span id="invalidEmail" style="display:none; color:red"> Please ensure you have entered a valid email address </span> 
+      <span id="invalidPassword" style="display:none; color:red"> Please ensure you have entered a valid password: 6-20 characters with at least one uppercase and one lowercase letter and one number </span>
       <br /> <br />
       <p>Already have an account.<a href="/hotels/login"> Login</a></p>
       <br />

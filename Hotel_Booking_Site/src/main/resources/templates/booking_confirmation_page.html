@@ -8,25 +8,26 @@
 <header th:replace="fragments :: nav_bar"></header>
 
 <body>
+ 
+   <div class="container">
+   <h2 th:inline="text"> Booking Confirmation </h2>
+   <hr /> 
 
-   <div class="container">
-    <h2 th:inline="text"> Your Booking Details </h2>
-    <hr /> 
-   </div>
-   
-   <div class="container">
-   <h3>Thank you for booking with us <span th:text=${customer.getFirst_name()}></span>!</h3>
    <h4>
-   Your booking from <span th:text=${checkInDate}></span>
-   to <span th:text=${checkOutDate}></span>
-   for <span th:text=${numberOccupants}></span>
-   <span th:text="${numberOccupants == 1} ? 'Guest' : 'Guests' "></span>
-   is $<span th:text=${totalPrice}></span>.
-   <br><br>
-   <span class="moreInfo">To view more information on your booking or cancel your booking, please <a href="/hotels/login"> Login </a> </span></h4>
-   </div>
+   Your booking is confirmed from <span style="font-weight: bold" th:text=${checkInDate}></span>
+   to <span style="font-weight: bold" th:text=${checkOutDate}></span>
+   for <span style="font-weight: bold" th:text=${numberOccupants}></span>
+   <span style="font-weight: bold" th:text="${numberOccupants == 1} ? 'Guest' : 'Guests' "></span>
+   at a total of <b>$</b><span style="font-weight: bold" th:text=${totalPrice}></span>.
+   </h4>
+   <br />
    
-
-   <div th:replace="fragments :: footer" class="text-center"></div>
+   <h4 style="font-style: italic">
+   Thank you for booking with us <span th:text=${customer.getFirst_name()}></span>! <br />
+   <span class="moreInfo"> To view more information on your booking or cancel, please <a href="/hotels/login"> Login </a> </span></h4>
+   </div>
+   <br />
+   
 </body>
+ <div th:replace="fragments :: footer" class="text-center"></div>
 </html>
