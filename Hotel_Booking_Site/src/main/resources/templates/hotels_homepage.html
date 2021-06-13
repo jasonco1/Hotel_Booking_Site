@@ -7,7 +7,42 @@
 <header th:replace="fragments :: nav_bar"> </header>
 
 <body>
+<script> 
+$(document).ready(function(){
 
+   function validateFormInput(){
+         cityInput = $('[name="city"]').val();
+         checkInInput = $('[name="checkInDate"]').val();
+         checkOutInput = $('[name="checkOutDate"]').val();
+         
+         if (!cityInput.match(/[A-Za-z ]+/)){
+            $("#invalidInput").css("display", "inline");
+            return false;
+         }
+         
+         else if (!checkInInput.match(/[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4}/)){
+             $("#invalidInput").css("display", "inline");
+             return false;
+          }
+         
+         else if (!checkOutInput.match(/[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4}+/)){
+             $("#invalidInput").css("display", "inline");
+             return false;
+          }
+          
+         else {
+        	 $("#invalidInput").css("display", "none");
+          return true;
+         }
+      }
+   
+      $("#submit").on("click", function(e){
+          if (!validateFormInput()){
+           e.preventDefault();
+          }
+       });
+});
+</script>
    <div class="container">
     <h4 style="font-weight: bold; color: #156bc1; font-size:3.2em; text-align: center; text-shadow: 3px 3px 3px rgba(0,0,0,0.2);"> Book a Hotel </h4>
     <hr />
@@ -20,7 +55,7 @@
    		<h3 style="color: gray; font-weight:bold; color: #156bc1; ">Where to?</h3>
    		</div>
    	<div class="searchbar_item_2">	
-      <form action="/hotels/results" method="post">
+      <form id="inputForm" action="/hotels/results" method="post">
 
          <label for="city"> City:  </label>
          <input type="text" id="city" name="city" placeholder="Monterey Bay"> 
@@ -48,7 +83,8 @@
       });
       </script>
        
-         <button class="button button1" type="submit">Search</button>
+         <button class="button button1" id="submit" type="submit">Search</button> <br />
+         <p id="invalidInput" style="display:none; text-align: center; color:#ed2939"> Please ensure you have entered a valid city name and check in and check out dates. </p> 
          <p style="text-align: center; color: #ed2939;" th:text="${no_results} ? 'Sorry, no available hotels were found. Please try a different city or date range.' : '' "> </p>
       </form>
    		</div>
