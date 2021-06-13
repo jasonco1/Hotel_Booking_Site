@@ -1,6 +1,11 @@
 package hotel_booking_site.controllers;
-
+/* References
+ * https://stackoverflow.com/questions/10413350/date-conversion-from-string-to-sql-date-in-java-giving-different-output/17673514
+ * 
+ */
 import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +28,10 @@ public class HotelBookingController {
 	
 	//Convert this to use HTTP Sessions
 	String persistedCity;
-	String persistedCheckInDate;
-	String persistedCheckOutDate;
 	int persistedRoomId;
 	int persistedNumberOccupants;
+	java.sql.Date sqlCheckInDate;
+	java.sql.Date sqlCheckOutDate;
 	
 	@Autowired 
 	AvailableRoomsService availableRoomsService;
@@ -49,21 +54,21 @@ public class HotelBookingController {
 			@RequestParam("checkInDate") String checkInDate,
 			@RequestParam("checkOutDate") String checkOutDate,
 			@RequestParam("occupants") int numberOccupants
-			) {
+			) throws ParseException {
 		
 		//persist city and checkIn/Out dates
 		persistedCity = city;
-		persistedCheckInDate = checkInDate;
-		persistedCheckOutDate = checkOutDate;
+		sqlCheckInDate = newBookingService.stringToSqlDate(checkOutDate);
+		sqlCheckOutDate = newBookingService.stringToSqlDate(checkOutDate);
 		persistedNumberOccupants = numberOccupants;
 		
 		model.addAttribute("city", persistedCity);
-		model.addAttribute("checkInDate", persistedCheckInDate);
-		model.addAttribute("checkOutDate", persistedCheckOutDate);
+		model.addAttribute("checkInDate", sqlCheckInDate);
+		model.addAttribute("checkOutDate", sqlCheckOutDate);
 		model.addAttribute("numberOccupants", persistedNumberOccupants);
 		
 		//Query database to find available rooms
-		List<RoomInfo> roomInfoList = availableRoomsService.getRoomInfo(city);
+		List<RoomInfo> roomInfoList = availableRoomsService.getAvailableRooms(city, sqlCheckInDate, sqlCheckOutDate);
 		
 		if (roomInfoList == null) {
 			String no_rooms_found = "Sorry, no available rooms where found. Please try "
@@ -87,8 +92,8 @@ public class HotelBookingController {
 		
 		model.addAttribute("roomId", persistedRoomId);
 		model.addAttribute("city", persistedCity);
-		model.addAttribute("checkInDate", persistedCheckInDate);
-		model.addAttribute("checkOutDate", persistedCheckOutDate);
+		model.addAttribute("checkInDate", sqlCheckInDate);
+		model.addAttribute("checkOutDate", sqlCheckOutDate);
 		
 		return "new_customer_checkout_page";
 	}
@@ -106,8 +111,8 @@ public class HotelBookingController {
 			@RequestParam("password") String password
 			) {
 		
-		model.addAttribute("checkInDate", persistedCheckInDate);
-		model.addAttribute("checkOutDate", persistedCheckOutDate);
+		model.addAttribute("checkInDate", sqlCheckInDate);
+		model.addAttribute("checkOutDate", sqlCheckOutDate);
 		model.addAttribute("totalPrice", 199.00);
 		model.addAttribute("numberOccupants", persistedNumberOccupants);
 		
@@ -124,8 +129,8 @@ public class HotelBookingController {
 		Booking booking = new Booking();
 		booking.setRoom_id(persistedRoomId);
 		booking.setCustomer_id(customerDataService.findCustomerIdByUsername(email));
-		booking.setCheck_in_date(persistedCheckInDate);
-		booking.setCheck_out_date(persistedCheckOutDate);
+		booking.setCheck_in_date(sqlCheckInDate);
+		booking.setCheck_out_date(sqlCheckOutDate);
 		booking.setTotal_price(199.00);
 		booking.setNumber_occupants(1);	
 		newBookingService.persistNewBooking(booking);

@@ -1,5 +1,7 @@
 package hotel_booking_site.services;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +32,16 @@ public class NewBookingService {
 	
 	@Autowired 
 	PackageBookingsRepository packageBookingsRepository;
+	
+	//stringToSqlDate()
+	//
+	//Converts String formatted date (MUST be in format: "MM/dd/yyyy") to SQL Date
+	public java.sql.Date stringToSqlDate(String date) throws ParseException {
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+		java.util.Date javaDate = formatter.parse(date);
+		return(new java.sql.Date(javaDate.getTime()) );
+	}
 	
 	public boolean persistNewBooking(Booking booking) {
 		bookingsRepository.save(booking);

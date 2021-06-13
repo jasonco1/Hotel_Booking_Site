@@ -65,6 +65,10 @@ public class HotelsRestControllerTest {
 	@Test
 	public void shouldReturnRoomResultsListOrNotFound() throws Exception {
 		
+		//Create Sql.Date parameters for Booking objects
+		java.sql.Date checkIn = newBookingService.stringToSqlDate("06/01/2021");
+		java.sql.Date checkOut = newBookingService.stringToSqlDate("06/07/2021");
+		
 		//build two RoomInfo objects for RoomInfo list
 		Hotel hotel = new Hotel(1, "Hotel", "111 Avenue", "Monterey", "CA", 
 				"USA", "10001", "777-777-7777", 5, "<img>", 5, "Pool", "Bay");
@@ -79,12 +83,12 @@ public class HotelsRestControllerTest {
 		//AvailableRoomsService MockBean will return roomInfoList when called 
 		//by REST controller. If REST controller is working correctly, calling 
 		//its API route should return roomInfoList in JSON format
-		given(availableRoomsService.getRoomInfo("Monterey")).willReturn(roomInfoList);
-		given(availableRoomsService.getRoomInfo("InvalidCity")).willReturn(null);
+		given(availableRoomsService.getAvailableRooms("Monterey", checkIn, checkOut)).willReturn(roomInfoList);
+		given(availableRoomsService.getAvailableRooms("InvalidCity", checkIn, checkOut)).willReturn(null);
 		
 		//Simulate HTTP GET requests to API route for valid and invalid city names
-		MockHttpServletResponse response = mockMvc.perform(get("/hotels/api/getRooms/?city=Monterey&checkInDate=6/01/2022&checkOutDate=6/07/2021")).andReturn().getResponse();
-		MockHttpServletResponse notFoundResponse = mockMvc.perform(get("/hotels/api/getRooms/?city=InvalidCity&checkInDate=6/01/2022&checkOutDate=6/07/2021")).andReturn().getResponse();
+		MockHttpServletResponse response = mockMvc.perform(get("/hotels/api/getRooms/?city=Monterey&checkInDate=06/01/2022&checkOutDate=06/07/2021")).andReturn().getResponse();
+		MockHttpServletResponse notFoundResponse = mockMvc.perform(get("/hotels/api/getRooms/?city=InvalidCity&checkInDate=06/01/2022&checkOutDate=06/07/2021")).andReturn().getResponse();
 		
 		//Convert HTTP response in JSON to RoomInfo list and get status code of search when city name is not found
 		List<RoomInfo> actualResult = jsonRoomInfoListAttempt.parseObject(response.getContentAsString());
@@ -98,8 +102,12 @@ public class HotelsRestControllerTest {
 	@Test
 	public void shouldPersistNewPackageBooking() throws Exception {
 		
+		//Create Sql.Date parameters for Booking objects
+		java.sql.Date checkIn = newBookingService.stringToSqlDate("06/01/2021");
+		java.sql.Date checkOut = newBookingService.stringToSqlDate("06/07/2021");
+		
 		//create PackageBooking object and convert to JSON
-		PackageBooking packageBooking = new PackageBooking(1, 1, 1, 199.0, "6/01/2021", "6/08/2021", 5);
+		PackageBooking packageBooking = new PackageBooking(1, 1, 1, 199.0, checkIn, checkOut, 5);
 		ObjectMapper mapper = new ObjectMapper();
 		String json = mapper.writeValueAsString(packageBooking);
 		

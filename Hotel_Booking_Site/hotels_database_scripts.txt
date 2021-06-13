@@ -37,8 +37,8 @@ CREATE TABLE bookings (
     room_id INT,
     customer_id INT,
     total_price DOUBLE,
-    check_in_date VARCHAR(30),
-    check_out_date VARCHAR(30),
+    check_in_date DATE,
+    check_out_date DATE,
     number_occupants INT,
     PRIMARY KEY (id)
     )
@@ -49,8 +49,8 @@ CREATE TABLE package_bookings (
     room_id INT,
     customer_id INT,
     total_price DOUBLE,
-    check_in_date VARCHAR(30),
-    check_out_date VARCHAR(30),
+    check_in_date DATE,
+    check_out_date DATE,
     number_occupants INT,
     PRIMARY KEY (id)
     )

@@ -19,6 +19,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -47,31 +48,43 @@ public class NewBookingServiceTest {
 	}
 	
 	@Test
-	public void newBookingServiceShouldPersistNewBooking() {
+	public void newBookingServiceShouldPersistNewBooking() throws ParseException {
 	
-	Booking booking = new Booking(1, 1, 1, 199.0, "6/1/2021", "6/03/2021", 2);
+	//Create Sql.Date parameters for Booking objects
+	java.sql.Date checkIn = newBookingService.stringToSqlDate("06/01/2021");
+	java.sql.Date checkOut = newBookingService.stringToSqlDate("06/07/2021");
+		
+	Booking booking = new Booking(1, 1, 1, 199.0, checkIn, checkOut, 2);
 	given(bookingsRepository.save(booking)).willReturn(booking);
 	assertThat(true).isEqualTo(newBookingService.persistNewBooking(booking));
 	}
 	
 	@Test
-	public void newBookingServiceShouldPersistPackageBooking() {
+	public void newBookingServiceShouldPersistPackageBooking() throws Exception {
 	
-	PackageBooking packageBooking = new PackageBooking(1, 1, 1, 199.0, "6/1/2021", "6/03/2021", 2);
+	//Create Sql.Date parameters for Booking objects
+	java.sql.Date checkIn = newBookingService.stringToSqlDate("06/01/2021");
+	java.sql.Date checkOut = newBookingService.stringToSqlDate("06/07/2021");
+	
+	PackageBooking packageBooking = new PackageBooking(1, 1, 1, 199.0, checkIn, checkOut, 2);
 	given(packageBookingsRepository.save(packageBooking)).willReturn(packageBooking);
 	assertThat(true).isEqualTo(newBookingService.persistNewPackageBooking(packageBooking));
 	}
 	
 	@Test
-	public void shouldReturnListOfCustomerBookings() {
+	public void shouldReturnListOfCustomerBookings() throws ParseException {
 		
 		//Build test data
 		Hotel hotel = new Hotel(1, "Hotel", "111 Avenue", "Monterey", "CA", 
 				"USA", "10001", "777-777-7777", 5, "<img>", 5, "Pool", "Bay");
 		Room room = new Room(1, 1, 199.0, 1, "Single", 1);
 		
-		Booking booking1 = new Booking(1, 1, 1, 199.0, "6/1/2021", "6/03/2021", 2);
-		Booking booking2 = new Booking(2, 1, 1, 199.0, "6/1/2021", "6/03/2021", 2);
+		//Create Sql.Date parameters for Booking objects
+		java.sql.Date checkIn = newBookingService.stringToSqlDate("06/01/2021");
+		java.sql.Date checkOut = newBookingService.stringToSqlDate("06/07/2021");
+			
+		Booking booking1 = new Booking(1, 1, 1, 199.0, checkIn, checkOut, 2);
+		Booking booking2 = new Booking(1, 1, 1, 199.0, checkIn, checkOut, 2);
 		List<Booking> bookings = new ArrayList<>();
 		List<Booking> emptyList = new ArrayList<>();
 		bookings.add(booking1);

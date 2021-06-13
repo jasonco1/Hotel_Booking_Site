@@ -2,6 +2,8 @@
 package hotel_booking_site.controllers;
 
 import java.util.List;
+import java.sql.Date;
+import java.text.ParseException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -44,17 +46,21 @@ public class HotelsRestController {
 	//getAvailableRoomsList()
 	//
 	//Required parameters: city, checkInDate, checkOutDate
-	//Usage: /hotels/api/getRooms/?city=Las%20Vegas&checkInDate=6/01/2022&checkOutDate=6/07/2021
+	//Usage: /hotels/api/getRooms/?city=Denver&checkInDate=6/01/2022&checkOutDate=6/07/2021
+	//Important: Dates MUST be formatted MM/DD/YYYY 
 	//Returns list of available rooms as a RoomInfo object in a JSON array 
 	@GetMapping("/hotels/api/getRooms/")
 	public ResponseEntity<List<RoomInfo>> getAvailableRoomsList(
 			@RequestParam("city") String city, 
 			@RequestParam("checkInDate") String checkInDate,
 			@RequestParam("checkOutDate") String checkOutDate
-			){
-	
+			) throws ParseException{
+		
+		//Convert String dates to Sql Dates
+		Date sqlCheckInDate = newBookingService.stringToSqlDate(checkInDate);
+		Date sqlCheckOutDate = newBookingService.stringToSqlDate(checkOutDate);
 		//Query database to find available rooms
-		List<RoomInfo> roomInfoList = availableRoomsService.getRoomInfo(city);
+		List<RoomInfo> roomInfoList = availableRoomsService.getAvailableRooms(city, sqlCheckInDate, sqlCheckOutDate);
 		
 		if (roomInfoList == null) {
 			return new ResponseEntity<List<RoomInfo>>(HttpStatus.NOT_FOUND);
@@ -70,7 +76,7 @@ public class HotelsRestController {
 	public ResponseEntity<PackageBooking> create(@RequestBody PackageBooking packageBooking){
 		
 		newBookingService.persistNewPackageBooking(packageBooking);
-		return new ResponseEntity<PackageBooking>(HttpStatus.OK);
+		return new ResponseEntity<PackageBooking>(packageBooking, HttpStatus.OK);
 	}
 		
 	//cancelPackageBookingById()
@@ -97,7 +103,7 @@ public class HotelsRestController {
 	public ResponseEntity<Customer> create(@RequestBody Customer customer){
 		
 		customerDataService.persistNewCustomer(customer);
-		return new ResponseEntity<Customer>(HttpStatus.OK);
+		return new ResponseEntity<Customer>(customer, HttpStatus.OK);
 	}
 	
 }

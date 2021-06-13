@@ -7,12 +7,35 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="rooms")
-//custom queries: https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#reference
-//https://www.javaguides.net/2018/11/spring-data-jpa-namednativequery-namednativequeries-example.html
-@NamedNativeQuery(name = "Room.findByCityName",
-	query = "SELECT r.id, r.hotel_id, r.price_per_night, r.max_occupants, r.bed_type, r.number_of_beds FROM rooms r JOIN hotels_table h ON r.hotel_id = h.id WHERE h.city = ?1 AND r.id NOT IN (SELECT room_id FROM bookings) ORDER BY r.price_per_night",
+/* Custom Queries
+ * 
+ * References:
+ * https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#reference
+ * https://www.javaguides.net/2018/11/spring-data-jpa-namednativequery-namednativequeries-example.html 
+ * 
+ * @NamedNativeQuery findAvailableRooms finds all available rooms not already booked during the user's searched date range
+ * Compares against both bookings and package_bookings table
+ */
+@NamedNativeQuery(name = "Room.findAvailableRooms",
+	query = "SELECT r.id, r.hotel_id, r.price_per_night, r.max_occupants, r.bed_type, r.number_of_beds "
+			+ "FROM rooms r JOIN hotels_table h ON r.hotel_id = h.id WHERE h.city = ?1 "
+			+ "AND r.id NOT IN (SELECT b.room_id FROM bookings b WHERE"
+			+ "(?2 >= b.check_in_date AND ?2 <= b.check_out_date)"
+			+ "OR"
+			+ "(?2 <= b.check_in_date AND ?3 >= b.check_in_date)"
+			+ ") "
+			+ "AND r.id NOT IN (SELECT p.room_id FROM package_bookings p WHERE"
+			+ "(?2 >= p.check_in_date AND ?2 <= p.check_out_date)"
+			+ "OR"
+			+ "(?3 >= p.check_in_date AND ?3 >= p.check_in_date)"
+			+ ") "
+			+ "ORDER BY r.price_per_night",
 			resultClass = Room.class)
-			
+
+@NamedNativeQuery(name = "Room.findByCityName",
+query = "SELECT r.id, r.hotel_id, r.price_per_night, r.max_occupants, r.bed_type, r.number_of_beds FROM rooms r JOIN hotels_table h ON r.hotel_id = h.id WHERE h.city = ?1 AND r.id NOT IN (SELECT room_id FROM bookings) ORDER BY r.price_per_night",
+		resultClass = Room.class)
+
 public class Room {
 	
 	@Id
