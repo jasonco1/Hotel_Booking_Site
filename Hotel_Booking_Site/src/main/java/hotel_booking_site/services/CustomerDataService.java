@@ -52,5 +52,11 @@ public class CustomerDataService {
 		return customer;
 	}
 	
+	//Needs Test
+	public void updateAccountBalanceById(int id) {
+	double balance = customersRepository.returnAccountBalanceById(id);
+	customersRepository.updateAccountBalance(id, balance);
+	}
+
 }
 

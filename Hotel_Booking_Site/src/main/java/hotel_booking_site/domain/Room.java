@@ -20,14 +20,14 @@ import javax.persistence.Table;
 	query = "SELECT r.id, r.hotel_id, r.price_per_night, r.max_occupants, r.bed_type, r.number_of_beds "
 			+ "FROM rooms r JOIN hotels_table h ON r.hotel_id = h.id WHERE h.city = ?1 "
 			+ "AND r.id NOT IN (SELECT b.room_id FROM bookings b WHERE"
-			+ "(?2 >= b.check_in_date AND ?2 <= b.check_out_date)"
+			+ "(?2 >= b.check_in_date AND ?2 < b.check_out_date)"
 			+ "OR"
-			+ "(?2 <= b.check_in_date AND ?3 >= b.check_in_date)"
+			+ "(?2 <= b.check_in_date AND ?3 > b.check_in_date)"
 			+ ") "
 			+ "AND r.id NOT IN (SELECT p.room_id FROM package_bookings p WHERE"
-			+ "(?2 >= p.check_in_date AND ?2 <= p.check_out_date)"
+			+ "(?2 >= p.check_in_date AND ?2 < p.check_out_date)"
 			+ "OR"
-			+ "(?3 >= p.check_in_date AND ?3 >= p.check_in_date)"
+			+ "(?2 <= p.check_in_date AND ?3 > p.check_in_date)"
 			+ ") "
 			+ "ORDER BY r.price_per_night",
 			resultClass = Room.class)

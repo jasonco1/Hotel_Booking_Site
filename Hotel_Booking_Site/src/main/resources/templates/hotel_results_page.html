@@ -62,6 +62,7 @@
    					<tr><br>		
    					<form th:action="@{/hotels/checkout}" method="post">
    					<input type="hidden" id="roomId" name="roomId" th:value=${roomInfo.room.getId()} />
+   					<input type="hidden" id="pricePerNight" name="pricePerNight" th:value=${roomInfo.room.price_per_night} />
    					<button class="button button2" type="submit">Book Now</button>
    					</form>
    			</div>

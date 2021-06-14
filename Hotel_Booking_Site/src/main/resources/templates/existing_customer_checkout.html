@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+
+<head th:replace="fragments :: html_head">
+
+<title>Hotel Results</title>
+</head>
+<header th:replace="fragments :: nav_bar"></header>
+<body>
+
+   <div class="container">
+    <h2 style="text-shadow: 2px 2px 2px rgba(0,0,0,0.2);" th:inline="text"> Finalize Reservation </h2>
+     Staying in <span style="font-weight: bold" th:text=${city}> </span> 
+     from <span style="font-weight: bold" th:text=${checkInDate}> </span>
+     to <span style="font-weight: bold" th:text=${checkOutDate}> </span>
+     at a total of $<span style="font-weight: bold" th:text=${session.totalPrice}> </span>
+    </div>
+    <hr />
+   
+   <body>
+   <div class="container" style=text-align:center>
+    <h3> Confirm my Booking </h3> 
+    
+     <form id="inputForm" action="/hotels/submitExistingCustomerBooking" method="POST">
+      <input type="hidden" name="roomId" th:value=${roomId}>
+      <input type="hidden" name="checkInDate" th:value=${checkInDate}>
+      <input type="hidden" name="checkOutDate" th:value=${checkOutDate}>
+        
+      <button class="button button5" id="submit" type="submit">Book Stay</button>
+     </form>
+     
+</body>
+<div th:replace="fragments :: footer" class="text-center"></div>
+</html>
