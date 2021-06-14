@@ -54,7 +54,7 @@ public class HotelBookingController {
 	java.sql.Date sqlCheckInDate;
 	java.sql.Date sqlCheckOutDate;
 	
-	//HTTP Routes
+	//HTTP  Routes
 	@GetMapping("/hotels/home")
 	public String getHotelsHomepage(Model model) {
 		return "hotels_homepage";
