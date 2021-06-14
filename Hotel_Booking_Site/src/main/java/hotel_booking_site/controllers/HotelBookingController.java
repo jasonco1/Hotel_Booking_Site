@@ -58,7 +58,7 @@ public class HotelBookingController {
 		
 		//persist city and checkIn/Out dates
 		persistedCity = city;
-		sqlCheckInDate = newBookingService.stringToSqlDate(checkOutDate);
+		sqlCheckInDate = newBookingService.stringToSqlDate(checkInDate);
 		sqlCheckOutDate = newBookingService.stringToSqlDate(checkOutDate);
 		persistedNumberOccupants = numberOccupants;
 		
