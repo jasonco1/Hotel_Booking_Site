@@ -288,8 +288,35 @@ public class HotelBookingController {
 	}
 	
 	//Navigation Bar Routes
+	
+	@GetMapping("/hotels/myAccount")
+	public String getCustomerAccountPage(Model model, HttpSession session) {
+		Customer customer = (Customer) session.getAttribute("customer");
+
+		//Update customer account balance
+		customerDataService.updateAccountBalanceById(customer.getId());
+		double currentBalance = customersRepository.returnAccountBalanceById(customer.getId());
+		customer.setCurrent_balance(currentBalance); 
+
+		model.addAttribute(customer);
+
+		//Build list of customer's bookings
+		List<BookingInfo> bookingInfoList = newBookingService.getListOfBookingsByCustomerId(customer.getId());
+		if (bookingInfoList == null) {
+			model.addAttribute("bookings", false);
+		}
+		
+		else {
+		model.addAttribute("bookings", true);
+		model.addAttribute(bookingInfoList);
+		}
+		
+		
+		return "customer_account_page";
+	}
+	
 	@GetMapping("/hotels/login")
-	public String getHotelsLoginPage(Model model) {
+	public String getCustomerLoginPage(Model model) {
 		return "customer_login_page";
 	}
 	

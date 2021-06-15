@@ -7,42 +7,8 @@
 <header th:replace="fragments :: nav_bar"> </header>
 
 <body>
-<script> 
-$(document).ready(function(){
+<script type="text/javascript" th:src="@{/js/hotel_homepage.js}"></script>
 
-   function validateFormInput(){
-         cityInput = $('[name="city"]').val();
-         checkInInput = $('[name="checkInDate"]').val();
-         checkOutInput = $('[name="checkOutDate"]').val();
-         
-         if (!cityInput.match(/[A-Za-z ]+/)){
-            $("#invalidInput").css("display", "inline");
-            return false;
-         }
-         
-         else if (!checkInInput.match(/[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4}/)){
-             $("#invalidInput").css("display", "inline");
-             return false;
-          }
-         
-         else if (!checkOutInput.match(/[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4}/)){
-             $("#invalidInput").css("display", "inline");
-             return false;
-          }
-          
-         else {
-        	 $("#invalidInput").css("display", "none");
-          return true;
-         }
-      }
-   
-      $("#submit").on("click", function(e){
-          if (!validateFormInput()){
-           e.preventDefault();
-          }
-       });
-});
-</script>
    <div class="container">
     <h4 style="font-weight: bold; color: #156bc1; font-size:3.2em; text-align: center; text-shadow: 3px 3px 3px rgba(0,0,0,0.2);"> Book a Hotel </h4>
     <hr />

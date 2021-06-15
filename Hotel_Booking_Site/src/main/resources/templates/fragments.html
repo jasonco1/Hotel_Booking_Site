@@ -14,8 +14,10 @@ las_vegas: https://pixabay.com/photos/las-vegas-night-lights-strip-573600/
 <head th:fragment="html_head">
 <meta charset="ISO-8859-1">
 
-<script type="text/javascript" th:src="@{https://code.jquery.com/jquery-1.11.3.min.js}"></script>
+<script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js}"></script>
+<script th:src="@{https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js}"></script>
 <script type="text/javascript" th:src="@{https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js}"></script>
+
 
 <link rel="stylesheet" type="text/css" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css}" />
 <link rel="stylesheet" th:href="@{/css/styles.css}" />
@@ -30,12 +32,18 @@ las_vegas: https://pixabay.com/photos/las-vegas-night-lights-strip-573600/
       </div>
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-      <li class="active"> <a th:if="${session.authenticated}" href="/hotels/logout"> Logout </a> <a th:if="!${session.authenticated}" href="/hotels/login"> Login </a> </li>
       <li class="active"><a href="/deals">Package Deals</a></li>
       <li class="active"><a href="/airline">Flights</a></li>
       <li class="active"><a href="/carrentals">Car Rentals</a></li>
     </ul>
+        <div class="navbar-collapse collapse nav_bar_right">
+      <ul class="nav navbar-nav">
+       <li class="active"> <a th:if="${session.authenticated}" href="/hotels/myAccount"> My Bookings </a> <a th:if="!${session.authenticated}" href="/hotels/login"> My Bookings </a> </li>
+      <li class="active"> <a th:if="${session.authenticated}" href="/hotels/logout"> Logout </a> <a th:if="!${session.authenticated}" href="/hotels/login"> Login </a> </li>
+    </ul>
       </div>
+      </div>
+      
    </div>
  </div>
  <br /> <br /> <br />  

@@ -8,41 +8,7 @@
 <header th:replace="fragments :: nav_bar"></header>
 
 <body>
-<script> 
-$(document).ready(function(){
-
-   function validateFormInput(){
-         userInputEmail = $('[name="email"]').val();
-         userInputPassword = $('[name=password]').val();
-         
-         if (!userInputEmail.match(/[A-Za-z0-9]+@[A-Za-z0-9]+\.[A-Za-z]{3}/)){
-            $("#invalidEmail").css("display", "inline");
-            $("#invalidPassword").css("display", "none");
-            return false;
-         }
-         else if (!userInputPassword.match(/[A-Za-z0-9]{6,20}/)){
-        	 $("#invalidEmail").css("display", "none");
-        	 $("#invalidPassword").css("display", "inline");
-        	 return false;
-         }
-         else {
-        	 $("#invalidEmail").css("display", "none");
-        	 $("#invalidPassword").css("display", "none");
-        	 return true;
-         }
-      }
-
-      $("#inputForm").on("change", function(){
-         validateFormInput();
-      });
-      
-      $("#submit").on("click", function(e){
-          if (!validateFormInput()){
-        	  e.preventDefault();
-          }
-       });
-});
-</script>
+<script type="text/javascript" th:src="@{/js/new_customer_checkout_page.js}"></script>
 
    <div class="container">
     <h2 style="text-shadow: 2px 2px 2px rgba(0,0,0,0.2);" th:inline="text"> Finalize Reservation </h2>
@@ -59,7 +25,7 @@ $(document).ready(function(){
     
       <form id="inputForm" action="/hotels/submitNewCustomerBooking" method="POST">
       <input type="hidden" name="roomId" th:value=${roomId}>
-      <input type="hidden" name="numberOccupants" value=4>
+      <input type="hidden" name="numberOccupants" th:value=${numberOccupants}>
       
          <label for="email"> Email  </label><br>
          <input type="text" id="email" name="email" placeholder="username@csumb.edu"><br>  
